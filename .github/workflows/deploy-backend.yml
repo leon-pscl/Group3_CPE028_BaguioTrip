@@ -1,0 +1,40 @@
+# Backend deploy workflow
+# Runs on push to main, installs dependencies and runs tests.
+# Deploy is a placeholder — the backend would be deployed to a platform
+# like Railway or Render (not GitHub Pages).
+# Uncomment and configure the deploy step for your chosen platform.
+
+name: Deploy Backend
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: server
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: server/package-lock.json
+      - run: npm ci
+      - run: npm test
+        continue-on-error: true
+      # Deploy placeholder — replace with your platform's CLI:
+      # - name: Deploy to Railway
+      #   run: npx railway up
+      #   env:
+      #     RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+      #
+      # Or for Render:
+      # - name: Deploy to Render
+      #   run: |
+      #     curl -X POST "https://api.render.com/v1/services/${{ secrets.RENDER_SERVICE_ID }}/deploys" \
+      #       -H "Authorization: Bearer ${{ secrets.RENDER_API_KEY }}"

@@ -1,6 +1,8 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { ATTRACTIONS, CATEGORY_META } from './data.js';
-import { loadTrip, saveTrip, defaultTrip, crpId } from './storage.js';
+import { loadTrip, saveTrip, defaultTrip, crpId, saveTripToServer, loadTripFromServer } from './storage.js';
+import { getToken, getUser, clearAuth } from './auth.js';
+import Login from './Login.jsx';
 import Schedule from './Schedule.jsx';
 import Weather from './Weather.jsx';
 import TripMap from './TripMap.jsx';
@@ -15,10 +17,42 @@ const TABS = [
 
 export default function App() {
   const [tab, setTab] = useState('plan');
+  const [authData, setAuthData] = useState(() => {
+    const token = getToken();
+    const user = getUser();
+    return token ? { token, user } : null;
+  });
   const [trip, setTrip] = useState(() => loadTrip() || defaultTrip());
 
-  // Persist on every change — this is our "database".
-  useEffect(() => { saveTrip(trip); }, [trip]);
+  const handleLogin = useCallback(() => {
+    setAuthData({ token: getToken(), user: getUser() });
+  }, []);
+
+  const handleLogout = useCallback(() => {
+    saveTrip(trip);
+    clearAuth();
+    setAuthData(null);
+  }, [trip]);
+
+  // Load trip from server when auth state becomes logged-in.
+  useEffect(() => {
+    if (!authData) return;
+    loadTripFromServer().then((serverTrip) => {
+      if (serverTrip) setTrip(serverTrip);
+    });
+  }, [authData]);
+
+  // Persist — server if logged in, localStorage otherwise.
+  useEffect(() => {
+    if (!authData) {
+      saveTrip(trip);
+      return;
+    }
+    const timer = setTimeout(() => {
+      saveTripToServer(trip);
+    }, 400);
+    return () => clearTimeout(timer);
+  }, [trip, authData]);
 
   const attractionById = useMemo(() => {
     const m = {};
@@ -39,10 +73,21 @@ export default function App() {
     return out;
   }, [trip, attractionById]);
 
+  if (!authData) {
+    return (
+      <div className="app">
+        <Login onLogin={handleLogin} />
+      </div>
+    );
+  }
+
   return (
     <div className="app">
       <header className="hero">
-        <div className="kicker">City of Pines</div>
+        <div className="hero-top">
+          <div className="kicker">City of Pines</div>
+          <button className="logout-btn" onClick={handleLogout}>Log out</button>
+        </div>
         <h1>Baguio Trip</h1>
         <p>Build your days, watch the highland weather, map every stop.</p>
       </header>
