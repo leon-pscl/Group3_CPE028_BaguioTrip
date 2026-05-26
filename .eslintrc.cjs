@@ -13,5 +13,5 @@ module.exports = {
     'react/react-in-jsx-scope': 'off',
     'no-unused-vars': ['warn', { argsIgnorePattern: '^_' }]
   },
-  ignorePatterns: ['dist', 'dev-dist', 'node_modules']
+  ignorePatterns: ['dist', 'dev-dist', 'node_modules', 'server']
 };
