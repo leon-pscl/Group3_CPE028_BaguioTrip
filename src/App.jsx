@@ -24,15 +24,15 @@ export default function App() {
   });
   const [trip, setTrip] = useState(() => loadTrip() || defaultTrip());
 
-  const handleLogin = useCallback(() => {
+  function handleLogin() {
     setAuthData({ token: getToken(), user: getUser() });
-  }, []);
+  }
 
-  const handleLogout = useCallback(() => {
+  function handleLogout() {
     saveTrip(trip);
     clearAuth();
     setAuthData(null);
-  }, [trip]);
+  }
 
   // Load trip from server when auth state becomes logged-in.
   useEffect(() => {
