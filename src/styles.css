@@ -65,6 +65,9 @@ body::before {
   width: 160px; height: 160px;
   background: radial-gradient(circle, rgba(107,143,94,0.5), transparent 70%);
 }
+.hero-top {
+  display: flex; justify-content: space-between; align-items: center;
+}
 .hero .kicker {
   font-size: 12px; letter-spacing: 0.32em; text-transform: uppercase;
   color: var(--moss); font-weight: 600;
@@ -78,6 +81,14 @@ body::before {
   font-style: italic;
 }
 .hero p { font-size: 14px; opacity: 0.85; }
+
+.logout-btn {
+  background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+  color: var(--fog); font-family: inherit; font-size: 12px; font-weight: 600;
+  padding: 5px 12px; border-radius: 999px; cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+.logout-btn:hover { background: rgba(255,255,255,0.2); border-color: rgba(255,255,255,0.35); }
 
 /* ---- Tabs ----------------------------------------------------------- */
 .tabs {
@@ -235,6 +246,51 @@ body::before {
 }
 .empty { text-align: center; color: var(--muted); font-size: 13px; padding: 28px 12px; }
 .empty .em-glyph { font-size: 34px; display: block; margin-bottom: 8px; opacity: 0.5; }
+
+/* ---- Login page ----------------------------------------------------- */
+.login-page {
+  display: flex; align-items: center; justify-content: center;
+  min-height: 100vh; padding: 24px 16px;
+}
+.login-card {
+  width: 100%; max-width: 360px;
+  background: #fff; border-radius: var(--radius);
+  box-shadow: var(--shadow); overflow: hidden;
+}
+.login-hero {
+  background: linear-gradient(165deg, var(--pine) 0%, var(--pine-2) 100%);
+  color: var(--fog); padding: 32px 24px 24px;
+}
+.login-hero .kicker {
+  font-size: 11px; letter-spacing: 0.32em; text-transform: uppercase;
+  color: var(--moss); font-weight: 600;
+}
+.login-hero h1 {
+  font-family: 'Fraunces', serif; font-size: 32px; font-weight: 600;
+  font-style: italic; margin-top: 4px;
+}
+.login-intro { font-size: 13px; color: var(--muted); padding: 18px 24px 12px; }
+.login-input {
+  display: block; width: calc(100% - 48px); margin: 0 24px 12px;
+  padding: 12px 14px; font-family: inherit; font-size: 15px;
+  border: 1px solid var(--line); border-radius: 12px;
+  background: var(--fog); color: var(--ink);
+  transition: border-color 0.15s;
+}
+.login-input:focus { outline: none; border-color: var(--moss); }
+.login-error { font-size: 12.5px; color: var(--berry); padding: 0 24px 6px; }
+.login-actions { display: flex; gap: 10px; padding: 4px 24px 24px; }
+.login-btn {
+  flex: 1; border: none; font-family: inherit; font-size: 14px; font-weight: 600;
+  padding: 12px; border-radius: 12px; cursor: pointer;
+  transition: transform 0.12s, background 0.15s;
+}
+.login-btn:active { transform: scale(0.97); }
+.login-btn:disabled { opacity: 0.6; cursor: default; }
+.login-btn:not(.secondary) { background: var(--pine); color: var(--fog); }
+.login-btn:not(.secondary):hover { background: var(--pine-2); }
+.login-btn.secondary { background: var(--fog-2); color: var(--pine); }
+.login-btn.secondary:hover { background: var(--line); }
 
 /* ---- Travel / legs -------------------------------------------------- */
 .leg-day {

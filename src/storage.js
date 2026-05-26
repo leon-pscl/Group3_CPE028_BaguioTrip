@@ -1,6 +1,8 @@
 // Tiny localStorage-backed store for the itinerary. No backend needed —
 // the whole trip plan lives in the browser and survives reloads + offline.
 
+import { apiRequest } from './auth.js';
+
 const KEY = 'baguio-trip-v1';
 
 export function loadTrip() {
@@ -32,4 +34,17 @@ export function defaultTrip() {
 
 export function crpId() {
   return 'id-' + Math.random().toString(36).slice(2, 9);
+}
+
+// Server-backed operations — used when user is logged in.
+export async function saveTripToServer(trip) {
+  await apiRequest('/api/trips', {
+    method: 'POST',
+    body: JSON.stringify({ trip_data: trip }),
+  });
+}
+
+export async function loadTripFromServer() {
+  const data = await apiRequest('/api/trips');
+  return data ? data.trip_data : null;
 }
