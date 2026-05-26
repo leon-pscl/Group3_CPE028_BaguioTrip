@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { ATTRACTIONS, CATEGORY_META } from './data.js';
 import { loadTrip, saveTrip, defaultTrip, crpId, saveTripToServer, loadTripFromServer } from './storage.js';
 import { getToken, getUser, clearAuth } from './auth.js';
